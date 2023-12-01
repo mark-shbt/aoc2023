@@ -12,8 +12,26 @@ MAPPING = {
     "nine": "9",
 }
 
-SPELLED_NUMS = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
-NUMERIC_NUMS = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+SPELLED_NUMS = [
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+]
 
 f = open("input.txt", "r")
 lines = f.readlines()
@@ -27,27 +45,16 @@ def get_number(word: str):
     last_num = ""
     last_num_index = -1
     # spelled numbers
-    for spelled in SPELLED_NUMS:
-        if spelled not in word:
+    for numbers in SPELLED_NUMS:
+        if numbers not in word:
             continue
-        indices = [match.start() for  match in re.finditer(spelled, word)]
+        indices = [match.start() for match in re.finditer(numbers, word)]
         if first_num_index > indices[0]:
-            first_num = MAPPING.get(spelled)
+            first_num = MAPPING.get(numbers) if numbers.isalpha() else numbers
             first_num_index = indices[0]
         if last_num_index < indices[-1]:
             last_num_index = indices[-1]
-            last_num = MAPPING.get(spelled)
-    for numeric in NUMERIC_NUMS:
-        number = str(numeric)
-        if number not in word:
-            continue
-        indices = [match.start() for  match in re.finditer(number, word)]
-        if first_num_index > indices[0]:
-            first_num = number
-            first_num_index = indices[0]
-        if last_num_index < indices[-1]:
-            last_num = number
-            last_num_index = indices[-1]
+            last_num = MAPPING.get(numbers) if numbers.isalpha() else numbers
     num = first_num + last_num
     return int(num)
 
